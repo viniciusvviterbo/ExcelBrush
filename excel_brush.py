@@ -1,5 +1,14 @@
-import sys, getopt
 from PIL import Image
+import argparse
+
+# Configuracao dos argumentos
+parser = argparse.ArgumentParser(description = 'Um programa para desenhar fotos em planilhas.')
+parser.add_argument('-i', action = 'store', dest = 'image',
+                    default = '', required = True,
+                    help = 'A imagem a ser processada pelo programa.')
+parser.add_argument('-s', action = 'store', dest = 'outputImageSize', required = True,
+                    help = 'O tamanho da imagem a ser retornada')
+
 
 def print_instrucoes():
     print("excel_brush.py -s <size>")
@@ -8,31 +17,12 @@ def main():
     arquivo_imagem = ""
     tamanho_imagem = 0
 
-    # Recebe as opções e argumentos passados como parâmetros
-    try:
-        opts, args = getopt.getopt(sys.argv,"hi:s:",["help", "image=", "size="])
+    # Recebe os argumentos, se as variaveis nao forem passadas, retorna -h
+    arguments = parser.parse_args()
+    imagem_original = Image.open(arguments.image)
+    tamanho_imagem = int(arguments.outputImageSize)
 
-    # Erro levantado quando opções inseridas não são reconhecidas
-    except getopt.GetoptError:
-        print_instrucoes()
-        sys.exit(1)
-
-    print(sys.argv)
-    print(opts)
-    print(args)
-      
-    for opt, arg in opts:
-        if opt in ("-h", "--help"):
-            print_instrucoes()
-    
-        elif opt in ("-i", "--image"):
-            imagem_original = Image.open(arg)
         
-        # Identifica a opção informada na lista de argumentos, posição 1
-        elif opt in ("-s", "--size"):
-            # Define o tamanho da resolução como o informado pelo usuário
-            tamanho_imagem = int(arg)
-    
     try:
         # Cria uma imagem reduzida que é nada mais que a imagem_original redimensionada com a resolução informada
         imagem_reduzida = imagem_original.resize((tamanho_imagem, tamanho_imagem), Image.BILINEAR)
