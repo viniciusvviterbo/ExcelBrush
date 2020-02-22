@@ -10,6 +10,14 @@ parser.add_argument('-i', action = 'store', dest = 'image',
 parser.add_argument('-s', action = 'store', dest = 'outputImageSize', required = True,
                     help = 'O tamanho da imagem a ser retornada')
 
+# Configuracao dos argumentos
+parser = argparse.ArgumentParser(description = 'Um programa para desenhar fotos em planilhas.')
+parser.add_argument('-i', action = 'store', dest = 'image',
+                    default = '', required = True,
+                    help = 'A imagem a ser processada pelo programa.')
+parser.add_argument('-s', action = 'store', dest = 'outputImageSize', required = True,
+                    help = 'O tamanho da imagem a ser retornada')
+
 def rgb2hex(cor):
     return "{:02x}{:02x}{:02x}".format(cor[0], cor[1], cor[2])
 
