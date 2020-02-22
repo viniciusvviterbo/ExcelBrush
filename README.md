@@ -1,5 +1,3 @@
-python3 excel_brush.py -i file_name -s size
-
 # Excel Brush
 
 Re-do your images on spreadsheets
@@ -25,6 +23,8 @@ Example:
 ```
 python3 excel_brush.py -i './image.jpeg' -s 64
 ```
+
+
 
 
 **[GNU v3.0](https://github.com/viniciusvviterbo/ExcelBrush/blob/master/LICENSE.md)**
