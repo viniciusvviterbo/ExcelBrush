@@ -1,6 +1,7 @@
 from PIL import Image
 import argparse
 import openpyxl
+import os
 
 # Configuracao dos argumentos
 parser = argparse.ArgumentParser(description = 'Software to draw images on spreadsheets.')
@@ -44,7 +45,8 @@ def main():
                 cor = rgb2hex(pix[x - 1, y - 1]).upper()
                 ws.cell(y, x).fill = openpyxl.styles.PatternFill(fgColor=cor, fill_type='solid')
 
-        wb.save(nome_arquivo + '.xlsx')
+        os.mkdir('Files_Done')
+        wb.save('./Files_Done/' + nome_arquivo + '.xlsx')
 
     except():
         print('An error occurred.')
