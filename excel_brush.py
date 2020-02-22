@@ -3,20 +3,12 @@ import argparse
 import openpyxl
 
 # Configuracao dos argumentos
-parser = argparse.ArgumentParser(description = 'Um programa para desenhar fotos em planilhas.')
-parser.add_argument('-i', action = 'store', dest = 'image',
+parser = argparse.ArgumentParser(description = 'Software to draw images on spreadsheets.')
+parser.add_argument('-i', action = 'store', dest = 'image_file_path',
                     default = '', required = True,
-                    help = 'A imagem a ser processada pelo programa.')
-parser.add_argument('-s', action = 'store', dest = 'outputImageSize', required = True,
-                    help = 'O tamanho da imagem a ser retornada')
-
-# Configuracao dos argumentos
-parser = argparse.ArgumentParser(description = 'Um programa para desenhar fotos em planilhas.')
-parser.add_argument('-i', action = 'store', dest = 'image',
-                    default = '', required = True,
-                    help = 'A imagem a ser processada pelo programa.')
-parser.add_argument('-s', action = 'store', dest = 'outputImageSize', required = True,
-                    help = 'O tamanho da imagem a ser retornada')
+                    help = 'Image to be redone on a spreadsheet.')
+parser.add_argument('-s', action = 'store', dest = 'resolution', required = True,
+                    help = 'Image\'s resolution on the spreadsheet')
 
 def rgb2hex(cor):
     return "{:02x}{:02x}{:02x}".format(cor[0], cor[1], cor[2])
@@ -26,8 +18,8 @@ def main():
     # Recebe os argumentos, se as variaveis nao forem passadas, retorna -h
     arguments = parser.parse_args()
 
-    imagem_original = Image.open(arguments.image)
-    resolucao_imagem = int(arguments.outputImageSize)
+    imagem_original = Image.open(arguments.image_file_path)
+    resolucao_imagem = int(arguments.resolution)
 
     try:
         # Define o nome base dos arquivos a serem criados
