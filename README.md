@@ -1,6 +1,5 @@
 # Excel Brush
-
-Re-do your images on spreadsheets
+Transform images into spreadsheet paintings
 
 ### Installing Dependencies
 
