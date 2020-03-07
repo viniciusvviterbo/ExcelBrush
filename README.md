@@ -6,9 +6,7 @@ Re-do your images on spreadsheets
 
 Clone this repository, and:
 ```
-pip3 install argparse
-pip3 install pillow
-pip3 install openpyxl
+pip3 install argparse pillow openpyxl
 ```
 
 ### Usage
@@ -27,4 +25,4 @@ python3 excel_brush.py -i './image.jpeg' -s 64
 
 
 
-**[GNU v3.0](https://github.com/viniciusvviterbo/ExcelBrush/blob/master/LICENSE.md)**
+**[GNU GPL v3.0](https://www.gnu.org/licenses/gpl-3.0.html)**
