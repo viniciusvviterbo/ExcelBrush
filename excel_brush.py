@@ -4,10 +4,12 @@ import openpyxl
 import os
 
 # Configuracao dos argumentos
-parser = argparse.ArgumentParser(description = 'Software to draw images on spreadsheets.')
+parser = argparse.ArgumentParser(description = 'Draws images as spreadsheet paintings.')
+
 parser.add_argument('-i', action = 'store', dest = 'image_file_path',
                     default = '', required = True,
                     help = 'Image to be redone on a spreadsheet.')
+
 parser.add_argument('-s', action = 'store', dest = 'resolution', required = True,
                     help = 'Image\'s resolution on the spreadsheet')
 
@@ -25,13 +27,17 @@ def main():
     try:
         # Define o nome base dos arquivos a serem criados
         nome_arquivo = os.path.splitext(os.path.basename(arguments.image_file_path))[0] + str(resolucao_imagem) + 'x' + str(resolucao_imagem)
+        
         # Cria uma imagem reduzida que é nada mais que a imagem_original redimensionada com a resolução informada
         imagem_reduzida = imagem_original.resize((resolucao_imagem, resolucao_imagem), Image.BILINEAR)
+        
         # Os dados da imagem sao lidos e armazenados em 'pix' 
         pix = imagem_reduzida.load()
+
         # Armazena as dimensoes da imagem
         largura = imagem_reduzida.size[0]
         altura = imagem_reduzida.size[1]
+        
         # Instancia objetos para manipulacao da planilha
         wb = openpyxl.Workbook()
         ws = wb.worksheets[0]
@@ -40,12 +46,15 @@ def main():
             # Altera a altura da linha
             # PARA ALTERAÇOES DO TAMANHO, MODIFICAR APENAS O VALOR QUE MULTIPLICA 18.00 PARA MANTER AS CELULAS QUADRADAS
             ws.row_dimensions[x].height = 18.00 * 1
+        
             for y in range(1, altura + 1):
                 # Altera a largura da coluna
                 # PARA ALTERAÇOES DO TAMANHO, MODIFICAR APENAS O VALOR QUE MULTIPLICA 2.43 PARA MANTER AS CELULAS QUADRADAS
                 ws.column_dimensions[ws.cell(x, y).column_letter].width = 2.43 * 1
+            
                 # Identifica a cor do pixel da iteracao
                 cor = rgb2hex(pix[x - 1, y - 1]).upper()
+                
                 # Pinta a celula da planilha
                 ws.cell(y, x).fill = openpyxl.styles.PatternFill(fgColor=cor, fill_type='solid')
 
@@ -62,3 +71,4 @@ def main():
 # Chama a função main
 if __name__ == '__main__':
     main()
+
