@@ -1,4 +1,5 @@
 from PIL import Image
+from progress.bar import ChargingBar
 import argparse
 import openpyxl
 import os
@@ -8,7 +9,6 @@ parser = argparse.ArgumentParser(description = 'Software to draw images on sprea
 parser.add_argument('-i', action = 'store', dest = 'image_file_path', default = '', required = True, help = 'Image to be drawned on a spreadsheet.')
 parser.add_argument('-height', action = 'store', dest = 'image_height', default = '', required = False, help = 'Height in pixels of the spreadsheet image. Maximum of 1048576 pixels.')
 parser.add_argument('-width', action = 'store', dest = 'image_width', default = '', required = False, help = 'Width in pixels of the spreadsheet image. Maximum of 1024 pixels.')
-
 
 # Retorna a string hexadecimal correspondente a cor RGB informada
 def rgb2hex(cor):
@@ -34,14 +34,18 @@ def main():
         # Os dados da imagem sao lidos e armazenados em 'pix' 
         pix = imagem_reduzida.load()
         # Armazena as dimensoes da imagem_reduzida
-
         largura = imagem_reduzida.size[0]
         altura = imagem_reduzida.size[1]
         
+        # Informa o início do processo
+        print('Processo iniciado.')
+
         # Instancia objetos para manipulacao da planilha
         wb = openpyxl.Workbook()
         ws = wb.worksheets[0]
 
+        # Inicia a interface da CLI que indica o progresso do processo
+        barra_progresso = ChargingBar('Desenhando', max = largura)
         for x in range(1, largura + 1):
             # Altera a altura da linha
             # PARA ALTERAÇOES DO TAMANHO, MODIFICAR APENAS O VALOR QUE MULTIPLICA 18.00 PARA MANTER AS CELULAS QUADRADAS
@@ -57,6 +61,10 @@ def main():
                 
                 # Pinta a celula da planilha
                 ws.cell(y, x).fill = openpyxl.styles.PatternFill(fgColor=cor, fill_type='solid')
+            # Atualiza a barra de progresso
+            barra_progresso.next()
+        # Finaliza  barra de progresso
+        barra_progresso.finish()
 
         # Cria o diretorio de arquivos prontos caso não exista
         if not os.path.exists('Files_Done'):
@@ -65,10 +73,12 @@ def main():
         # Salva a pixel art
         wb.save('./Files_Done/' + nome_arquivo + '.xlsx')
 
+        # Informa o fim da execução
+        print('Execução concluída!')
+
     except():
         print('An error occurred.')
 
 # Chama a função main
 if __name__ == '__main__':
     main()
-
