@@ -5,11 +5,9 @@ import os
 
 # Configuracao dos argumentos
 parser = argparse.ArgumentParser(description = 'Software to draw images on spreadsheets.')
-parser.add_argument('-i', action = 'store', dest = 'image_file_path',
-                    default = '', required = True,
-                    help = 'Image to be redone on a spreadsheet.')
-parser.add_argument('-s', action = 'store', dest = 'resolution', required = True,
-                    help = 'Image\'s resolution on the spreadsheet')
+parser.add_argument('-i', action = 'store', dest = 'image_file_path', default = '', required = True, help = 'Image to be drawned on a spreadsheet.')
+parser.add_argument('-height', action = 'store', dest = 'image_height', default = '', required = False, help = 'Height in pixels of the spreadsheet image. Maximum of 1048576 pixels.')
+parser.add_argument('-width', action = 'store', dest = 'image_width', default = '', required = False, help = 'Width in pixels of the spreadsheet image. Maximum of 1024 pixels.')
 
 # Retorna a string hexadecimal correspondente a cor RGB informada
 def rgb2hex(cor):
@@ -20,16 +18,21 @@ def main():
     # Recebe os argumentos. Se as variaveis nao forem passadas, retorna -h
     arguments = parser.parse_args()
     imagem_original = Image.open(arguments.image_file_path)
-    resolucao_imagem = int(arguments.resolution)
+    tmp_larg, tmp_alt = imagem_original.size # Retorna as dimensões da imagem informada
+    imagem_altura = tmp_alt if (arguments.image_height == '') else int(arguments.image_height)
+    imagem_largura = tmp_larg if (arguments.image_width == '') else int(arguments.image_width)   # assim como a maior largura possível para uma imagem será 1024 pixels
+
+#    if(imagem_largura > 1024 || imagem_altura > 1048576):
+#        raise Exception('Image is too big to be drawned. Choose a smaller resolution.')
 
     try:
         # Define o nome base dos arquivos a serem criados
-        nome_arquivo = os.path.splitext(os.path.basename(arguments.image_file_path))[0] + str(resolucao_imagem) + 'x' + str(resolucao_imagem)
+        nome_arquivo = os.path.splitext(os.path.basename(arguments.image_file_path))[0] + str(imagem_altura) + 'x' + str(imagem_largura)
         # Cria uma imagem reduzida que é nada mais que a imagem_original redimensionada com a resolução informada
-        imagem_reduzida = imagem_original.resize((resolucao_imagem, resolucao_imagem), Image.BILINEAR)
+        imagem_reduzida = imagem_original.resize((imagem_largura, imagem_altura), Image.BILINEAR)
         # Os dados da imagem sao lidos e armazenados em 'pix' 
         pix = imagem_reduzida.load()
-        # Armazena as dimensoes da imagem
+        # Armazena as dimensoes da imagem_reduzida
         largura = imagem_reduzida.size[0]
         altura = imagem_reduzida.size[1]
         # Instancia objetos para manipulacao da planilha
