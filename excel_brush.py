@@ -9,6 +9,7 @@ parser.add_argument('-i', action = 'store', dest = 'image_file_path', default = 
 parser.add_argument('-height', action = 'store', dest = 'image_height', default = '', required = False, help = 'Height in pixels of the spreadsheet image. Maximum of 1048576 pixels.')
 parser.add_argument('-width', action = 'store', dest = 'image_width', default = '', required = False, help = 'Width in pixels of the spreadsheet image. Maximum of 1024 pixels.')
 
+
 # Retorna a string hexadecimal correspondente a cor RGB informada
 def rgb2hex(cor):
     return "{:02x}{:02x}{:02x}".format(cor[0], cor[1], cor[2])
@@ -33,8 +34,10 @@ def main():
         # Os dados da imagem sao lidos e armazenados em 'pix' 
         pix = imagem_reduzida.load()
         # Armazena as dimensoes da imagem_reduzida
+
         largura = imagem_reduzida.size[0]
         altura = imagem_reduzida.size[1]
+        
         # Instancia objetos para manipulacao da planilha
         wb = openpyxl.Workbook()
         ws = wb.worksheets[0]
@@ -43,12 +46,15 @@ def main():
             # Altera a altura da linha
             # PARA ALTERAÇOES DO TAMANHO, MODIFICAR APENAS O VALOR QUE MULTIPLICA 18.00 PARA MANTER AS CELULAS QUADRADAS
             ws.row_dimensions[x].height = 18.00 * 1
+        
             for y in range(1, altura + 1):
                 # Altera a largura da coluna
                 # PARA ALTERAÇOES DO TAMANHO, MODIFICAR APENAS O VALOR QUE MULTIPLICA 2.43 PARA MANTER AS CELULAS QUADRADAS
                 ws.column_dimensions[ws.cell(x, y).column_letter].width = 2.43 * 1
+            
                 # Identifica a cor do pixel da iteracao
                 cor = rgb2hex(pix[x - 1, y - 1]).upper()
+                
                 # Pinta a celula da planilha
                 ws.cell(y, x).fill = openpyxl.styles.PatternFill(fgColor=cor, fill_type='solid')
 
@@ -65,3 +71,4 @@ def main():
 # Chama a função main
 if __name__ == '__main__':
     main()
+
