@@ -66,12 +66,15 @@ def main():
         # Finaliza  barra de progresso
         barra_progresso.finish()
 
+        # Define o nome do diretório destino das imagens
+        diretorio_planilhas = 'Done_Files'
+        
         # Cria o diretorio de arquivos prontos caso não exista
-        if not os.path.exists('Files_Done'):
-            os.mkdir('Files_Done')
+        if not os.path.exists(diretorio_planilhas):
+            os.mkdir(diretorio_planilhas)
 
         # Salva a pixel art
-        wb.save('./Files_Done/' + nome_arquivo + '.xlsx')
+        wb.save('./{}/'.format(diretorio_planilhas) + nome_arquivo + '.xlsx')
 
         # Informa o fim da execução
         print('Execução concluída!')
