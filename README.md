@@ -1,4 +1,4 @@
-# Excel Brush
+<h1 align="center">Excel Brush</h1>
 
 Transform images into spreadsheet paintings
 
